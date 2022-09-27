@@ -12,16 +12,16 @@ vUpFront.Z = 1000;
 
 orientation = calibrateOrientation(vUp, vUpFront);
 
-% initialize ANY mesuared gravity vector
+% initialize ANY mesuared acceleration vector
 vG = struct();
 vG.X = 500;
 vG.Y = 1000;
 vG.Z = -1000;
 
-% find vector components of gravity for each direction in the orientation
-gvComponents = findGravityVectorComponentsInTheOrientation(vG, orientation);
+% find vector components of acceleration for each direction in the orientation
+gvComponents = findVectorComponentsInTheOrientation(vG, orientation);
 
-% find gravity magnitude for each direction
+% find vector magnitude of acceleration for each directionin the orientation
 g = fingGravityMagnitudeInTheOrientation(vG, orientation);
 
 plotVectors(orientation, vUpFront, vG, gvComponents);
@@ -97,7 +97,7 @@ function res = calibrateOrientation(vUp, vUpFront)
     res = orientation;
 end
 
-function res = findGravityVectorComponentsInTheOrientation(vG, orientation)
+function res = findVectorComponentsInTheOrientation(vG, orientation)
     % find vector components of measuread gravity for each direction
     gvComponents = struct();
     gvComponents.vUp = vectorComponentParallelToAnotherVector(vG, orientation.vUp);
@@ -108,22 +108,22 @@ function res = findGravityVectorComponentsInTheOrientation(vG, orientation)
 end
 
 function res = fingGravityMagnitudeInTheOrientation(vG, orientation)
-    gvComponents = findGravityVectorComponentsInTheOrientation(vG, orientation);
+    gvComponents = findVectorComponentsInTheOrientation(vG, orientation);
     
-    % find gravity magnitude for each direction
+    % find acceleration magnitude for each direction
     g = struct();
     g.UP = vectorMagnitude(gvComponents.vUp);
     g.FRONT = vectorMagnitude(gvComponents.vFront);
     g.RIGHT = vectorMagnitude(gvComponents.vRight);
 
     if (isVectorsInOppositeDirection(orientation.vUp, gvComponents.vUp))
-        g.UP = -g.UP; % para baixo
+        g.UP = -g.UP; % DOWN
     end
     if (isVectorsInOppositeDirection(orientation.vFront, gvComponents.vFront))
-        g.FRONT = -g.FRONT; % para tras
+        g.FRONT = -g.FRONT; % BACK
     end
     if (isVectorsInOppositeDirection(orientation.vRight, gvComponents.vRight))
-        g.RIGHT = -g.RIGHT; % para esquerda
+        g.RIGHT = -g.RIGHT; % LEFT
     end
     
     res = g;
