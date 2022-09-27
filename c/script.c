@@ -2,7 +2,7 @@
  * script.c
  *
  *  Created on: September 27th, 2022
- *      Author: Roger Moschiel
+ *  Author: Roger Moschiel
  */
 
 #include <stdio.h>
@@ -84,7 +84,7 @@ void rotateVectorThroughAnotherVector(Vector *v1, Vector *v2, int angle, Vector 
     Vector e2;
     unitVector(&u2, &e2);
 
-     // To rotate v1 toward v2 by some rad angle, just compute rotV1 = (|v1|cos(rad))e1 + (|v1|sin(rad))e2
+    // To rotate v1 toward v2 by some rad angle, just compute rotV1 = (|v1|cos(rad))e1 + (|v1|sin(rad))e2
     double v1_m = vectorMagnitude(v1);
     double radians = angle*(PI/180.0);
 
@@ -153,13 +153,13 @@ void fingVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, O
     g->RIGHT = vectorMagnitude(&vComponents.vRight);
 
     if (isVectorsInOppositeDirection(&orientation->vUp, &vComponents.vUp)){
-        g->UP = -g->UP; // DOWN
+    g->UP = -g->UP; // DOWN
     }
     if (isVectorsInOppositeDirection(&orientation->vFront, &vComponents.vFront)){
-        g->FRONT = -g->FRONT; // BACK
-	}
+    g->FRONT = -g->FRONT; // BACK
+        }
     if (isVectorsInOppositeDirection(&orientation->vRight, &vComponents.vRight)){
-        g->RIGHT = -g->RIGHT; // LEFT
+    g->RIGHT = -g->RIGHT; // LEFT
     }
 }
 
@@ -170,26 +170,26 @@ int main()
     vUp.X = 800;
     vUp.Y = 1000;
     vUp.Z = 300;
-    
+
     // initialize measured UP_FRONT vector
     Vector vUpFront;
     vUpFront.X = 500;
     vUpFront.Y = 1000;
     vUpFront.Z = 1000;
-    
+
     // find orientation
     Orientation o;
     findOrientation(&vUp, &vUpFront, &o);
     printf("vUp -> X: %f, Y: %f, Z: %f\r\n", o.vUp.X, o.vUp.Y, o.vUp.Z);
     printf("vFront -> X: %f, Y: %f, Z: %f\r\n", o.vFront.X, o.vFront.Y, o.vFront.Z);
     printf("vRight -> X: %f, Y: %f, Z: %f\r\n", o.vRight.X, o.vRight.Y, o.vRight.Z);
-    
+
     // initialize ANY mesuared acceleration vector
     Vector vG;
     vG.X = 500;
     vG.Y = 1000;
     vG.Z = -1000;
-    
+
     // find vector components of acceleration for each direction in the orientation
     Orientation vComponents;
     findVectorComponentsInTheOrientation(&vG, &o, &vComponents);
@@ -201,6 +201,6 @@ int main()
     OrientationMagnitude g;
     fingVectorsMagnitudeInTheOrientation(&vG, &o, &g);
     printf("UP: %f, FRONT: %f, RIGHT: %f\r\n", g.UP, g.FRONT, g.RIGHT);
-    
+
     return 0;
 }
