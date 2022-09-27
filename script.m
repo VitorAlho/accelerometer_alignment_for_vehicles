@@ -21,8 +21,8 @@ vG.Z = -1000;
 % find vector components of acceleration for each direction in the orientation
 gvComponents = findVectorComponentsInTheOrientation(vG, orientation);
 
-% find vector magnitude of acceleration for each directionin the orientation
-g = fingGravityMagnitudeInTheOrientation(vG, orientation);
+% find vector magnitude of acceleration for each direction in the orientation
+g = fingVectorsMagnitudeInTheOrientation(vG, orientation);
 
 plotVectors(orientation, vUpFront, vG, gvComponents);
 
@@ -107,7 +107,7 @@ function res = findVectorComponentsInTheOrientation(vG, orientation)
     res = gvComponents;
 end
 
-function res = fingGravityMagnitudeInTheOrientation(vG, orientation)
+function res = fingVectorsMagnitudeInTheOrientation(vG, orientation)
     gvComponents = findVectorComponentsInTheOrientation(vG, orientation);
     
     % find acceleration magnitude for each direction
