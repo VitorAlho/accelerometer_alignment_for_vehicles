@@ -153,13 +153,13 @@ void fingVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, O
     g->RIGHT = vectorMagnitude(&vComponents.vRight);
 
     if (isVectorsInOppositeDirection(&orientation->vUp, &vComponents.vUp)){
-    g->UP = -g->UP; // DOWN
+        g->UP = -g->UP; // DOWN
     }
     if (isVectorsInOppositeDirection(&orientation->vFront, &vComponents.vFront)){
-    g->FRONT = -g->FRONT; // BACK
+        g->FRONT = -g->FRONT; // BACK
         }
     if (isVectorsInOppositeDirection(&orientation->vRight, &vComponents.vRight)){
-    g->RIGHT = -g->RIGHT; // LEFT
+        g->RIGHT = -g->RIGHT; // LEFT
     }
 }
 
