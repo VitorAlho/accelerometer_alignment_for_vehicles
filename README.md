@@ -1,4 +1,4 @@
-# acceloremeter_calibration_for_vehicles
+# accelerometer_calibration_for_vehicles
 
 This MATLAB script computes the acceloremeter orientation for a vehicle without the need of a gyroscope.
 It also computes the components of any other vector/acceleration for the given orientation.
