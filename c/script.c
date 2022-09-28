@@ -11,18 +11,21 @@
 
 #define PI 3.1415
 
+//describe any vector
 typedef struct {
 	double X;
 	double Y;
 	double Z;
 } Vector;
 
+//describe orientation vectors
 typedef struct {
 	Vector vUp;
 	Vector vFront;
 	Vector vRight;
 } Orientation;
 
+//describe the magnitude of the components of a vector in every direction of the orientation
 typedef struct {
 	float UP;
 	float FRONT;
@@ -30,7 +33,7 @@ typedef struct {
 } OrientationMagnitude;
 
 double vectorMagnitude(Vector *v) {
-    return sqrt(v->X*v->X + v->Y*v->Y + v->Z*v->Z);
+    return sqrtf(v->X*v->X + v->Y*v->Y + v->Z*v->Z);
 }
 
 void unitVector(Vector *inputV, Vector *outputV) {
