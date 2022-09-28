@@ -151,9 +151,9 @@ void fingVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, O
 	findVectorComponentsInTheOrientation(v, orientation, &vComponents);
 
     // find magnitude for each direction
-    g->UP = vectorMagnitude(&vComponents.vUp);
-    g->FRONT = vectorMagnitude(&vComponents.vFront);
-    g->RIGHT = vectorMagnitude(&vComponents.vRight);
+    g->UP = (float)vectorMagnitude(&vComponents.vUp);
+    g->FRONT = (float)vectorMagnitude(&vComponents.vFront);
+    g->RIGHT = (float)vectorMagnitude(&vComponents.vRight);
 
     if (isVectorsInOppositeDirection(&orientation->vUp, &vComponents.vUp)){
         g->UP = -g->UP; // DOWN
