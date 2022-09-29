@@ -90,10 +90,12 @@ void rotateVectorThroughAnotherVector(Vector *v1, Vector *v2, int angle, Vector 
     // To rotate v1 toward v2 by some rad angle, just compute rotV1 = (|v1|cos(rad))e1 + (|v1|sin(rad))e2
     double v1_m = vectorMagnitude(v1);
     double radians = angle*(PI/180.0);
+    double cosRad = cos(radians);
+    double sinRad = sin(radians);
 
-    rotV1->X = (v1_m * cos(radians)) * e1.X + (v1_m * sin(radians)) * e2.X;
-    rotV1->Y = (v1_m * cos(radians)) * e1.Y + (v1_m * sin(radians)) * e2.Y;
-    rotV1->Z = (v1_m * cos(radians)) * e1.Z + (v1_m * sin(radians)) * e2.Z;
+    rotV1->X = (v1_m * cosRad) * e1.X + (v1_m * sinRad) * e2.X;
+    rotV1->Y = (v1_m * cosRad) * e1.Y + (v1_m * sinRad) * e2.Y;
+    rotV1->Z = (v1_m * cosRad) * e1.Z + (v1_m * sinRad) * e2.Z;
 }
 
 void vectorComponentParallelToAnotherVector(Vector *v1, Vector *v2, Vector *parallelV) {
