@@ -1,6 +1,6 @@
 # accelerometer_calibration_for_vehicles
 
-This script computes the accelerometer orientation for a vehicle without the need of a gyroscope.
+This script computes the accelerometer orientation for a vehicle.
 It also computes the components of any other acceleration for the given orientation.
 
 It is assumed that the user is able to collect the **UPWARD** vector, and is able to compute the **UPWARD_FORWARD** vector, as described:
