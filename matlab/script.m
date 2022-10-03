@@ -6,7 +6,7 @@ PLOT_ORIENTATION = true;
 PLOT_UP_FRONT = false;
 PLOT_ACCELERATION_AND_COMPONENTS = true;
 PLOT_CUBE = true;
-CUBE_SIZE_RATIO = 0.5; 
+CUBE_SIZE_RATIO = 0.25; 
 % This align the orientation plot (UP, FRONT, RIGHT) to axis (X,Y,Z), for a better comparison with the device position
 ADJUST_PLOT_VIEW = true;  
 % this force a orientation aligned with the axis, used only for personal debug purposes
@@ -44,9 +44,9 @@ end
 
 % initialize ANY mesuared acceleration vector
 vG = struct();
-vG.X = 500;
-vG.Y = 1000;
-vG.Z = -1000;
+vG.X = 1000;
+vG.Y = 500;
+vG.Z = 1000;
 
 % find vector components of acceleration for each direction in the orientation
 gvComponents = vectorsMath.findVectorComponentsInTheOrientation(vG, o);
@@ -68,14 +68,17 @@ end
 
 
 %******************* PLOT ******************* PLOT ******************* PLOT *****************
-% Before plotting, we convert all vectors to unit vectors, for better scaling
-o.vUp = vectorsMath.unitVector(o.vUp);
-o.vFront = vectorsMath.unitVector(o.vFront);
-o.vRight = vectorsMath.unitVector(o.vRight);
-vG = vectorsMath.unitVector(vG);
-gvComponents.vUp = vectorsMath.unitVector(gvComponents.vUp);
-gvComponents.vFront = vectorsMath.unitVector(gvComponents.vFront);
-gvComponents.vRight = vectorsMath.unitVector(gvComponents.vRight);
+if(viewPlot.axisLimit == 1)
+    % Before plotting, we convert all vectors to unit vectors, for better scaling
+    o.vUp = vectorsMath.unitVector(o.vUp);
+    o.vFront = vectorsMath.unitVector(o.vFront);
+    o.vRight = vectorsMath.unitVector(o.vRight);
+    vG = vectorsMath.unitVector(vG);
+    gvComponents.vUp = vectorsMath.unitVector(gvComponents.vUp);
+    gvComponents.vFront = vectorsMath.unitVector(gvComponents.vFront);
+    gvComponents.vRight = vectorsMath.unitVector(gvComponents.vRight);
+end
+
 if FORCE_DEFAULT_ORIENTATION == false
     vUpFront = vectorsMath.unitVector(vUpFront);
 end
