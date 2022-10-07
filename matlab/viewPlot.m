@@ -1,9 +1,9 @@
 classdef viewPlot
     properties (Constant)
-        axisLimit = 1;
+        axisLimit = 1000;
     end
     methods (Static)
-        function ax = config(showAxis)
+        function init(showAxis)
             axisLimit = viewPlot.axisLimit;
             
             figure;
@@ -23,8 +23,6 @@ classdef viewPlot
             if showAxis
                 viewPlot.plotAxis();
             end
-            
-            ax = 0;
         end
         
         function plotAxis()
@@ -75,6 +73,37 @@ classdef viewPlot
             object = p;
         end
         
+        function plotAccComponentsForAGivenOrientation (configs, orientation, acc, accComponents)
+            plottedObjects = hggroup; % group plotted objects in one single handle, so we can manipulate all at once
+
+            if configs.PLOT_ORIENTATION
+                % plot 3D orientation, and save its object handler
+                plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(orientation.vUp, 'b-^', 1); % PLOT vUp direction
+                plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(orientation.vFront, 'g-^', 1); % PLOT vFront direction
+                plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(orientation.vRight, 'r-^', 1); % PLOT vRight direction
+            end
+
+            if configs.PLOT_UP_FRONT
+                %viewPlot.plotVectorToMatlabFormat(vUpFront, 'y-^', 2); % PLOT vUpFront direction
+            end
+
+            if configs.PLOT_CUBE
+                % plot 3D cube, and save its object handler
+                plottedObjects(4) = viewPlot.plotCube(configs.CUBE_SIZE_RATIO);
+            end
+
+            if configs.PLOT_ACCELERATION_AND_COMPONENTS
+                % plot 3D acceleration, and save its object handler
+                plottedObjects(5) = viewPlot.plotVectorToMatlabFormat(acc, 'k-^', 2); % PLOT mesuared acceleration vector
+                plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(accComponents.vUp, 'k--^', 2); % PLOT vUp component of acceleration vector
+                plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(accComponents.vFront, 'k--^', 2); % PLOT vFront component of acceleration vector
+                plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(accComponents.vRight, 'k--^', 2); % PLOT vRight component of acceleration vector
+            end
+
+            if (configs.ADJUST_PLOT_VIEW && configs.PLOT_ORIENTATION) 
+                viewPlot.adjustPlotView(orientation, plottedObjects);
+            end 
+        end
         
         function adjustPlotView(orientation, plottedObjects)
             cateto = orientation.vUp.Z;
@@ -82,29 +111,42 @@ classdef viewPlot
             hipotenusa = sqrt(cateto^2 + catetoOposto^2);
             theta = acos(cateto/hipotenusa);
             angleRotationAboutX = theta * (180/pi);
-            %disp('angleRotationAboutX:');
-            %disp(angleRotationAboutX);
-
+            if(orientation.vUp.Y > 0)
+                angleRotationAboutX = -angleRotationAboutX;
+            end
+            disp('angleRotationAboutX:');
+            disp(angleRotationAboutX);
+            
             %update plot by rotating objects along X axis
             rotate(plottedObjects, vectorsMath.unitVectorX, angleRotationAboutX);
-
+            
+            
             ObjUpRotated = plottedObjects(1);
             vUpRotated = [ObjUpRotated.XData(2) ObjUpRotated.YData(2) ObjUpRotated.ZData(2)];
             angleRotationAboutY = vectorsMath.angleBetweenVectorsMatlabFormat(vUpRotated, vectorsMath.unitVectorZ);
-            %disp('angleRotationAboutY:');
-            %disp(angleRotationAboutY);
-
+            if(vUpRotated(1) > 0) %se estiver no lado positivo de X, rotaciona ao contrario
+                angleRotationAboutY = -angleRotationAboutY;
+            end
+            disp('angleRotationAboutY:');
+            disp(angleRotationAboutY);
+            
             %update plot by rotating objects along Y axis
-            rotate(plottedObjects, vectorsMath.unitVectorY, -angleRotationAboutY);
-
+            rotate(plottedObjects, vectorsMath.unitVectorY, angleRotationAboutY);
+ 
+            
             ObjFrontRotated = plottedObjects(2);
             vFrontRotated = [ObjFrontRotated.XData(2) ObjFrontRotated.YData(2) ObjFrontRotated.ZData(2)];
             angleRotationAboutZ = vectorsMath.angleBetweenVectorsMatlabFormat(vFrontRotated, vectorsMath.unitVectorY);
-            %disp('angleRotationAboutZ:');
-            %disp(angleRotationAboutZ);
+            if(vFrontRotated(1) > 0) %se estiver no lado positivo de X, rotaciona ao contrario
+                angleRotationAboutZ = -angleRotationAboutZ;
+            end
+            disp('angleRotationAboutZ:');
+            disp(angleRotationAboutZ);
 
             %update plot by rotating objects along Z axis
             rotate(plottedObjects, vectorsMath.unitVectorZ, -angleRotationAboutZ);
         end
     end
 end
+
+

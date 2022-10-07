@@ -1,6 +1,6 @@
 classdef vectorsMath
     properties (Constant)
-       unitVectorX = [1 0 0];
+       unitVectorX = [1 0 0] * -1;
        unitVectorY = [0 1 0];
        unitVectorZ = [0 0 1];
     end
@@ -8,7 +8,7 @@ classdef vectorsMath
         function res = findOrientation(vUp, vUpFront)
             % find FRONT and RIGHT  vectors
             vFront = vectorsMath.rotateVectorThroughAnotherVector(vUp, vUpFront, 90);
-            vRight = vectorsMath.rotateVectorAroundAnotherVector(vUp, vFront, 90);
+            vRight = vectorsMath.rotateVectorAroundAnotherVector(vUp, vFront, -90);
 
             orientation = struct();
             orientation.vUp = vUp;
@@ -93,7 +93,7 @@ classdef vectorsMath
             % First we set e1 to the unit vector in the same direction as v1:
             e1 = vectorsMath.unitVector(v1);
 
-            % Now it's simple to find c1 using the dot product
+            % Now it's simple to find c1 using the dot product:
             c1 = vectorsMath.dotProduct(v2, e1);
 
             % Let u2 = c2e2 = v2−c1e1; then

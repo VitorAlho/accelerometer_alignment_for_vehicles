@@ -2,15 +2,18 @@ LOG_ORIENTATION = false; % LOG orientation vectors (UP, FRONT, RIGHT)
 LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
 LOG_ACCELERATION_MAGNITUDES = false; % Log the magnitude of the components
 
-PLOT_ORIENTATION = true; 
-PLOT_UP_FRONT = false;
-PLOT_ACCELERATION_AND_COMPONENTS = true;
-PLOT_CUBE = true;
-CUBE_SIZE_RATIO = 0.25; 
-% This align the orientation plot (UP, FRONT, RIGHT) to axis (X,Y,Z), for a better comparison with the device position
-ADJUST_PLOT_VIEW = true;  
 % this force a orientation aligned with the axis, used only for personal debug purposes
 FORCE_DEFAULT_ORIENTATION = false;
+
+plotAccConfig = struct();
+plotAccConfig.PLOT_ORIENTATION = true;
+plotAccConfig.PLOT_UP_FRONT = false;
+plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = true;
+plotAccConfig.PLOT_CUBE = true;
+plotAccConfig.CUBE_SIZE_RATIO = 0.25; 
+% for a better VISUAL comparison with the device position, this align the orientation (UP,FRONT,RIGHT) to axis (X,Y,Z)
+plotAccConfig.ADJUST_PLOT_VIEW = true;  
+
 
 o = struct(); %declare orientation
 vUpFront = struct(); %declare up + front
@@ -22,48 +25,41 @@ if FORCE_DEFAULT_ORIENTATION
 else 
     % initialize measured UP vector (vehicle not moving)
     vUp = struct();
-    vUp.X = 800;
-    vUp.Y = 1000;
-    vUp.Z = 300;
+    vUp.X = 242 * -1;
+    vUp.Y = 430;
+    vUp.Z = -845;
 
     % initialize measured UP_FRONT vector (vehicle acceleration in front direction)
-    vUpFront.X = 500;
-    vUpFront.Y = 1000;
-    vUpFront.Z = 1000;
+    vUpFront.X = -149 * -1;
+    vUpFront.Y = 582;
+    vUpFront.Z = -781;
 
     % find orientation
     o = vectorsMath.findOrientation(vUp, vUpFront);
 end
 
 if LOG_ORIENTATION
-    disp('orientation:');
-    disp(o.vUp);
-    disp(o.vFront);
-    disp(o.vRight);
+    disp('orientation:'); disp(o.vUp); disp(o.vFront); disp(o.vRight);
 end
 
 % initialize ANY mesuared acceleration vector
-vG = struct();
-vG.X = 1000;
-vG.Y = 500;
-vG.Z = 1000;
+vAcc = struct();
+vAcc.X = 500;
+vAcc.Y = 600;
+vAcc.Z = 400;
 
 % find vector components of acceleration for each direction in the orientation
-gvComponents = vectorsMath.findVectorComponentsInTheOrientation(vG, o);
+accComponents = vectorsMath.findVectorComponentsInTheOrientation(vAcc, o);
 
 if LOG_ACCELERATION_COMPONENTS
-    disp('acceleration components:');
-    disp(gvComponents.vUp);
-    disp(gvComponents.vFront);
-    disp(gvComponents.vRight);
+    disp('acceleration components:'); disp(accComponents.vUp); disp(accComponents.vFront); disp(accComponents.vRight);
 end
 
 % find vector magnitude of acceleration for each direction in the orientation
-g = vectorsMath.findVectorsMagnitudeInTheOrientation(vG, o);
+accMagnitudes = vectorsMath.findVectorsMagnitudeInTheOrientation(vAcc, o);
 
 if LOG_ACCELERATION_MAGNITUDES
-    disp('acceleration magnitudes:');
-    disp(g);
+    disp('acceleration magnitudes:'); disp(accMagnitudes);
 end
 
 
@@ -73,43 +69,17 @@ if(viewPlot.axisLimit == 1)
     o.vUp = vectorsMath.unitVector(o.vUp);
     o.vFront = vectorsMath.unitVector(o.vFront);
     o.vRight = vectorsMath.unitVector(o.vRight);
-    vG = vectorsMath.unitVector(vG);
-    gvComponents.vUp = vectorsMath.unitVector(gvComponents.vUp);
-    gvComponents.vFront = vectorsMath.unitVector(gvComponents.vFront);
-    gvComponents.vRight = vectorsMath.unitVector(gvComponents.vRight);
+    vAcc = vectorsMath.unitVector(vAcc);
+    accComponents.vUp = vectorsMath.unitVector(accComponents.vUp);
+    accComponents.vFront = vectorsMath.unitVector(accComponents.vFront);
+    accComponents.vRight = vectorsMath.unitVector(accComponents.vRight);
+    
+    if FORCE_DEFAULT_ORIENTATION == false
+        vUpFront = vectorsMath.unitVector(vUpFront);
+    end
 end
 
-if FORCE_DEFAULT_ORIENTATION == false
-    vUpFront = vectorsMath.unitVector(vUpFront);
-end
+viewPlot.init(true);
+viewPlot.plotAccComponentsForAGivenOrientation(plotAccConfig, o, vAcc, accComponents);
 
-viewPlot.config(true);
-plottedObjects = hggroup; % group plotted objects in one single handle, so we can manipulate all at once
 
-if PLOT_ORIENTATION
-    % plot 3D orientation, and save its object handler
-    plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(o.vUp, 'b-^', 1); % PLOT vUp direction
-    plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(o.vFront, 'g-^', 1); % PLOT vFront direction
-    plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(o.vRight, 'r-^', 1); % PLOT vRight direction
-end
-
-if PLOT_UP_FRONT
-    viewPlot.plotVectorToMatlabFormat(vUpFront, 'y-^', 2); % PLOT vUpFront direction
-end
-
-if PLOT_CUBE
-    % plot 3D cube, and save its object handler
-    plottedObjects(4) = viewPlot.plotCube(CUBE_SIZE_RATIO);
-end
-
-if PLOT_ACCELERATION_AND_COMPONENTS
-    % plot 3D acceleration, and save its object handler
-    plottedObjects(5) = viewPlot.plotVectorToMatlabFormat(vG, 'k-^', 2); % PLOT mesuared acceleration vector
-    plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(gvComponents.vUp, 'k--^', 2); % PLOT vUp component of acceleration vector
-    plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(gvComponents.vFront, 'k--^', 2); % PLOT vFront component of acceleration vector
-    plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(gvComponents.vRight, 'k--^', 2); % PLOT vRight component of acceleration vector
-end
-
-if (ADJUST_PLOT_VIEW && PLOT_ORIENTATION && (FORCE_DEFAULT_ORIENTATION == false)) 
-    viewPlot.adjustPlotView(o, plottedObjects);
-end
