@@ -1,19 +1,14 @@
-LOG_ORIENTATION = false; % LOG orientation vectors (UP, FRONT, RIGHT)
-LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
-LOG_ACCELERATION_MAGNITUDES = false; % Log the magnitude of the components
-
 % this force a orientation aligned with the axis, used only for personal debug purposes
 FORCE_DEFAULT_ORIENTATION = false;
 
 plotAccConfig = struct();
 plotAccConfig.PLOT_ORIENTATION = true;
 plotAccConfig.PLOT_UP_FRONT = false;
-plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = true;
+plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = false;
 plotAccConfig.PLOT_CUBE = true;
-plotAccConfig.CUBE_SIZE_RATIO = 0.25; 
+plotAccConfig.CUBE_SIZE_RATIO = 1; 
 % for a better VISUAL comparison with the device position, this align the orientation (UP,FRONT,RIGHT) to axis (X,Y,Z)
 plotAccConfig.ADJUST_PLOT_VIEW = true;  
-
 
 o = struct(); %declare orientation
 vUpFront = struct(); %declare up + front
@@ -25,21 +20,17 @@ if FORCE_DEFAULT_ORIENTATION
 else 
     % initialize measured UP vector (vehicle not moving)
     vUp = struct();
-    vUp.X = 242 * -1;
-    vUp.Y = 430;
-    vUp.Z = -845;
+    vUp.X = -19 * -1;
+    vUp.Y = -12;
+    vUp.Z = -975;
 
     % initialize measured UP_FRONT vector (vehicle acceleration in front direction)
-    vUpFront.X = -149 * -1;
-    vUpFront.Y = 582;
-    vUpFront.Z = -781;
+    vUpFront.X = 355 * -1;
+    vUpFront.Y = 403;
+    vUpFront.Z = -815;
 
     % find orientation
     o = vectorsMath.findOrientation(vUp, vUpFront);
-end
-
-if LOG_ORIENTATION
-    disp('orientation:'); disp(o.vUp); disp(o.vFront); disp(o.vRight);
 end
 
 % initialize ANY mesuared acceleration vector
@@ -48,19 +39,9 @@ vAcc.X = 500;
 vAcc.Y = 600;
 vAcc.Z = 400;
 
-% find vector components of acceleration for each direction in the orientation
-accComponents = vectorsMath.findVectorComponentsInTheOrientation(vAcc, o);
-
-if LOG_ACCELERATION_COMPONENTS
-    disp('acceleration components:'); disp(accComponents.vUp); disp(accComponents.vFront); disp(accComponents.vRight);
-end
 
 % find vector magnitude of acceleration for each direction in the orientation
 accMagnitudes = vectorsMath.findVectorsMagnitudeInTheOrientation(vAcc, o);
-
-if LOG_ACCELERATION_MAGNITUDES
-    disp('acceleration magnitudes:'); disp(accMagnitudes);
-end
 
 
 %******************* PLOT ******************* PLOT ******************* PLOT *****************

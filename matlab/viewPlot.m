@@ -60,7 +60,7 @@ classdef viewPlot
             %adjust size to specifiend sizeRatio
             vert = vert * sizeRatio;
             %setting cube height to half, so it looks like a rectangle
-            %vert = vert .* [1 1 0.5];
+            vert = vert .* [1 1 0.4];
             
             %group vertices combination to form the 6 faces of the cube
             fac = [1 2 6 5;2 3 7 6;3 4 8 7;4 1 5 8;1 2 3 4;5 6 7 8];
@@ -114,8 +114,8 @@ classdef viewPlot
             if(orientation.vUp.Y > 0)
                 angleRotationAboutX = -angleRotationAboutX;
             end
-            disp('angleRotationAboutX:');
-            disp(angleRotationAboutX);
+            %disp('angleRotationAboutX:');
+            %disp(angleRotationAboutX);
             
             %update plot by rotating objects along X axis
             rotate(plottedObjects, vectorsMath.unitVectorX, angleRotationAboutX);
@@ -127,8 +127,8 @@ classdef viewPlot
             if(vUpRotated(1) > 0) %se estiver no lado positivo de X, rotaciona ao contrario
                 angleRotationAboutY = -angleRotationAboutY;
             end
-            disp('angleRotationAboutY:');
-            disp(angleRotationAboutY);
+            %disp('angleRotationAboutY:');
+            %disp(angleRotationAboutY);
             
             %update plot by rotating objects along Y axis
             rotate(plottedObjects, vectorsMath.unitVectorY, angleRotationAboutY);
@@ -140,8 +140,8 @@ classdef viewPlot
             if(vFrontRotated(1) > 0) %se estiver no lado positivo de X, rotaciona ao contrario
                 angleRotationAboutZ = -angleRotationAboutZ;
             end
-            disp('angleRotationAboutZ:');
-            disp(angleRotationAboutZ);
+            %disp('angleRotationAboutZ:');
+            %disp(angleRotationAboutZ);
 
             %update plot by rotating objects along Z axis
             rotate(plottedObjects, vectorsMath.unitVectorZ, -angleRotationAboutZ);
