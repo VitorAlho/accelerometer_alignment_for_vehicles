@@ -1,5 +1,5 @@
 /*
- * script.c
+ * accOrientation.c
  *
  *  Created on: September 27th, 2022
  *  Author: Roger Moschiel
@@ -8,29 +8,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include "accOrientation.h"
 
 #define PI 3.1415
 
-//describe any vector
-typedef struct {
-	double X;
-	double Y;
-	double Z;
-} Vector;
-
-//describe orientation vectors
-typedef struct {
-	Vector vUp;
-	Vector vFront;
-	Vector vRight;
-} Orientation;
-
-//describe the magnitude of the components of a vector in every direction of the orientation
-typedef struct {
-	float UP;
-	float FRONT;
-	float RIGHT;
-} OrientationMagnitude;
+double vectorMagnitude(Vector *v);
+void unitVector(Vector *inputV, Vector *outputV);
+double dotProduct(Vector *v1, Vector *v2);
+void subtractVectors(Vector *v1, Vector *v2, Vector *outputV);
+void crossProduct(Vector *v1, Vector *v2, Vector *crossV);
+int isVectorsInOppositeDirection(Vector *v1, Vector *v2);
+void rotateVectorThroughAnotherVector(Vector *v1, Vector *v2, int angle, Vector *rotV1);
+void vectorComponentParallelToAnotherVector(Vector *v1, Vector *v2, Vector *parallelV);
+void rotateVectorAroundAnotherVector(Vector *v1, Vector *v2, int angle, Vector *rotV1);
+void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, Orientation *vComponents);
 
 double vectorMagnitude(Vector *v) {
     return sqrtf(v->X*v->X + v->Y*v->Y + v->Z*v->Z);
@@ -148,7 +139,7 @@ void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, O
     vectorComponentParallelToAnotherVector(v, &orientation->vRight, &vComponents->vRight);
 }
 
-void fingVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, OrientationMagnitude *g) {
+void findVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, OrientationMagnitude *g) {
 	Orientation vComponents;
 	findVectorComponentsInTheOrientation(v, orientation, &vComponents);
 
@@ -166,46 +157,4 @@ void fingVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, O
     if (isVectorsInOppositeDirection(&orientation->vRight, &vComponents.vRight)){
         g->RIGHT = -g->RIGHT; // LEFT
     }
-}
-
-int main()
-{
-    // initialize measured UP vector
-    Vector vUp;
-    vUp.X = 800;
-    vUp.Y = 1000;
-    vUp.Z = 300;
-
-    // initialize measured UP_FRONT vector
-    Vector vUpFront;
-    vUpFront.X = 500;
-    vUpFront.Y = 1000;
-    vUpFront.Z = 1000;
-
-    // find orientation
-    Orientation o;
-    findOrientation(&vUp, &vUpFront, &o);
-    printf("vUp -> X: %f, Y: %f, Z: %f\r\n", o.vUp.X, o.vUp.Y, o.vUp.Z);
-    printf("vFront -> X: %f, Y: %f, Z: %f\r\n", o.vFront.X, o.vFront.Y, o.vFront.Z);
-    printf("vRight -> X: %f, Y: %f, Z: %f\r\n", o.vRight.X, o.vRight.Y, o.vRight.Z);
-
-    // initialize ANY mesuared acceleration vector
-    Vector vG;
-    vG.X = 500;
-    vG.Y = 1000;
-    vG.Z = -1000;
-
-    // find vector components of acceleration for each direction in the orientation
-    Orientation vComponents;
-    findVectorComponentsInTheOrientation(&vG, &o, &vComponents);
-    printf("vUp Component -> X: %f, Y: %f, Z: %f\r\n", vComponents.vUp.X, vComponents.vUp.Y, vComponents.vUp.Z);
-    printf("vFront Component -> X: %f, Y: %f, Z: %f\r\n", vComponents.vFront.X, vComponents.vFront.Y, vComponents.vFront.Z);
-    printf("vRight Component -> X: %f, Y: %f, Z: %f\r\n", vComponents.vRight.X, vComponents.vRight.Y, vComponents.vRight.Z);
-
-    // find vector magnitude of acceleration for each direction in the orientation
-    OrientationMagnitude g;
-    fingVectorsMagnitudeInTheOrientation(&vG, &o, &g);
-    printf("UP: %f, FRONT: %f, RIGHT: %f\r\n", g.UP, g.FRONT, g.RIGHT);
-
-    return 0;
 }

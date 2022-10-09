@@ -1,7 +1,7 @@
 classdef vectorsMath
     properties (Constant)
         LOG_ORIENTATION = true; % LOG orientation vectors (UP, FRONT, RIGHT)
-        LOG_ACCELERATION_COMPONENTS = true; % LOG the compontens of any given acceleration, align in the orientation
+        LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
         LOG_ACCELERATION_MAGNITUDES = true; % Log the magnitude of the components
         
         unitVectorX = [1 0 0] * -1;
