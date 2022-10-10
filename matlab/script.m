@@ -4,9 +4,9 @@ FORCE_DEFAULT_ORIENTATION = false;
 plotAccConfig = struct();
 plotAccConfig.PLOT_ORIENTATION = true;
 plotAccConfig.PLOT_UP_FRONT = false;
-plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = false;
+plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = true;
 plotAccConfig.PLOT_CUBE = true;
-plotAccConfig.CUBE_SIZE_RATIO = 1; 
+plotAccConfig.CUBE_SIZE_RATIO = 0.25; 
 % for a better VISUAL comparison with the device position, this align the orientation (UP,FRONT,RIGHT) to axis (X,Y,Z)
 plotAccConfig.ADJUST_PLOT_VIEW = true;  
 
@@ -35,10 +35,13 @@ end
 
 % initialize ANY mesuared acceleration vector
 vAcc = struct();
-vAcc.X = 500;
+vAcc.X = 500 * -1;
 vAcc.Y = 600;
 vAcc.Z = 400;
 
+
+% find vector components for the given orientation
+accComponents = vectorsMath.findVectorComponentsInTheOrientation(vAcc, o);
 
 % find vector magnitude of acceleration for each direction in the orientation
 accMagnitudes = vectorsMath.findVectorsMagnitudeInTheOrientation(vAcc, o);

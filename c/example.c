@@ -8,13 +8,13 @@
 
 int main()
 {
-    // initialize measured UP vector
+    // initialize measured UP vector (vehicle not moving)
     Vector vUp;
     vUp.X = 800;
     vUp.Y = 1000;
     vUp.Z = 300;
 
-    // initialize measured UP_FRONT vector
+    // initialize measured UP_FRONT vector (vehicle acceleration in front direction)
     Vector vUpFront;
     vUpFront.X = 500;
     vUpFront.Y = 1000;
