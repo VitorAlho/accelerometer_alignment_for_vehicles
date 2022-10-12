@@ -4,7 +4,7 @@ classdef vectorsMath
         LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
         LOG_ACCELERATION_MAGNITUDES = true; % Log the magnitude of the components
         
-        unitVectorX = [1 0 0] * -1;
+        unitVectorX = [1 0 0] * -1; %adjustment for cube plot
         unitVectorY = [0 1 0];
         unitVectorZ = [0 0 1];
     end

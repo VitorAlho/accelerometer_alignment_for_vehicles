@@ -20,12 +20,12 @@ if FORCE_DEFAULT_ORIENTATION
 else 
     % initialize measured UP vector (vehicle not moving)
     vUp = struct();
-    vUp.X = -19 * -1;
+    vUp.X = -19 * -1; %adjustment for cube plot
     vUp.Y = -12;
     vUp.Z = -975;
 
     % initialize measured UP_FRONT vector (vehicle acceleration in front direction)
-    vUpFront.X = 355 * -1;
+    vUpFront.X = 355 * -1; %adjustment for cube plot
     vUpFront.Y = 403;
     vUpFront.Z = -815;
 
@@ -35,7 +35,7 @@ end
 
 % initialize ANY mesuared acceleration vector
 vAcc = struct();
-vAcc.X = 500 * -1;
+vAcc.X = 500 * -1; %adjustment for cube plot
 vAcc.Y = 600;
 vAcc.Z = 400;
 
