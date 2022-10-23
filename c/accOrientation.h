@@ -10,9 +10,9 @@
 
 //describe any vector
 typedef struct {
-	double X;
-	double Y;
-	double Z;
+	float X;
+	float Y;
+	float Z;
 } Vector;
 
 //describe orientation vectors

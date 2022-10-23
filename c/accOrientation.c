@@ -12,9 +12,9 @@
 
 #define PI 3.1415
 
-double vectorMagnitude(Vector *v);
+float vectorMagnitude(Vector *v);
 void unitVector(Vector *inputV, Vector *outputV);
-double dotProduct(Vector *v1, Vector *v2);
+float dotProduct(Vector *v1, Vector *v2);
 void subtractVectors(Vector *v1, Vector *v2, Vector *outputV);
 void crossProduct(Vector *v1, Vector *v2, Vector *crossV);
 int isVectorsInOppositeDirection(Vector *v1, Vector *v2);
@@ -23,18 +23,18 @@ void vectorComponentParallelToAnotherVector(Vector *v1, Vector *v2, Vector *para
 void rotateVectorAroundAnotherVector(Vector *v1, Vector *v2, int angle, Vector *rotV1);
 void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, Orientation *vComponents);
 
-double vectorMagnitude(Vector *v) {
+float vectorMagnitude(Vector *v) {
     return sqrtf(v->X*v->X + v->Y*v->Y + v->Z*v->Z);
 }
 
 void unitVector(Vector *inputV, Vector *outputV) {
-    int vm = vectorMagnitude(inputV);
+    float vm = vectorMagnitude(inputV);
     outputV->X = inputV->X / vm;
     outputV->Y = inputV->Y / vm;
     outputV->Z = inputV->Z / vm;
 }
 
-double dotProduct(Vector *v1, Vector *v2) {
+float dotProduct(Vector *v1, Vector *v2) {
     return v1->X*v2->X + v1->Y*v2->Y + v1->Z*v2->Z;
 }
 
@@ -127,7 +127,7 @@ void rotateVectorAroundAnotherVector(Vector *v1, Vector *v2, int angle, Vector *
 void findOrientation(Vector *vUp, Vector *vUpFront, Orientation *orientation) {
     // find FRONT and RIGHT  vectors
 	rotateVectorThroughAnotherVector(vUp, vUpFront, 90, &orientation->vFront);
-    rotateVectorAroundAnotherVector(vUp, &orientation->vFront, 90, &orientation->vRight);
+    rotateVectorAroundAnotherVector(vUp, &orientation->vFront, -90, &orientation->vRight);
 
     memcpy(&orientation->vUp, vUp, sizeof(Vector));
 }

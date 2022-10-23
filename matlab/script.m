@@ -6,7 +6,7 @@ plotAccConfig.PLOT_ORIENTATION = true;
 plotAccConfig.PLOT_UP_FRONT = false;
 plotAccConfig.PLOT_ACCELERATION_AND_COMPONENTS = true;
 plotAccConfig.PLOT_CUBE = true;
-plotAccConfig.CUBE_SIZE_RATIO = 0.25; 
+plotAccConfig.CUBE_SIZE_RATIO = 1; 
 % for a better VISUAL comparison with the device position, this align the orientation (UP,FRONT,RIGHT) to axis (X,Y,Z)
 plotAccConfig.ADJUST_PLOT_VIEW = true;  
 
@@ -20,14 +20,14 @@ if FORCE_DEFAULT_ORIENTATION
 else 
     % initialize measured UP vector (vehicle not moving)
     vUp = struct();
-    vUp.X = -19 * -1; %adjustment for cube plot
-    vUp.Y = -12;
+    vUp.X = -16 * 1; %adjustment for cube plot
+    vUp.Y = -15;
     vUp.Z = -975;
 
     % initialize measured UP_FRONT vector (vehicle acceleration in front direction)
-    vUpFront.X = 355 * -1; %adjustment for cube plot
-    vUpFront.Y = 403;
-    vUpFront.Z = -815;
+    vUpFront.X = -185 * 1; %adjustment for cube plot
+    vUpFront.Y = 300;
+    vUpFront.Z = -910;
 
     % find orientation
     o = vectorsMath.findOrientation(vUp, vUpFront);
