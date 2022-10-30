@@ -9,7 +9,10 @@ classdef viewPlot
             figure;
             hold on;
             grid on;
-            xlabel('X axis (RED)'), ylabel('Y axis (GREEN)'), zlabel('Z axis (BLUE)');
+          
+            %xlabel('X axis'), ylabel('Y axis'), zlabel('Z axis');
+            xlabel('LATERAL'), ylabel('FORWARD'), zlabel('VERTICAL');
+            
             axis equal;
             %axisLimit = max([abs(accGravity.X), abs(accGravity.Y), abs(accGravity.Z)]);
             xlim([-axisLimit axisLimit]);

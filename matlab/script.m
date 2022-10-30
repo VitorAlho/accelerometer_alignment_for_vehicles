@@ -20,10 +20,10 @@ if FORCE_DEFAULT_ORIENTATION
 else
     
     % initialize measured VERTICAL vector (vehicle not moving)
-    vVertical = vectorsMath.vectorToStructFormat([-103 * 1, 82, 966]);
+    vVertical = vectorsMath.vectorToStructFormat([16, -23, 978]);
 
     % initialize measured VERTICAL_FORWARD vector (vehicle acceleration in forward direction)
-    vVerticalForward = vectorsMath.vectorToStructFormat([-131 * 1, 132, 946]);
+    vVerticalForward = vectorsMath.vectorToStructFormat([-69, -340, 885]);
     
     % find orientation
     o = vectorsMath.findOrientation(vVertical, vVerticalForward);
