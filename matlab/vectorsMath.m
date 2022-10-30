@@ -1,6 +1,6 @@
 classdef vectorsMath
     properties (Constant)
-        LOG_ORIENTATION = true; % LOG orientation vectors (UP, FRONT, RIGHT)
+        LOG_ORIENTATION = true; % LOG orientation vectors (VERTICAL, FORWARD, LATERAL)
         LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
         LOG_ACCELERATION_MAGNITUDES = true; % Log the magnitude of the components
         
@@ -9,21 +9,21 @@ classdef vectorsMath
         unitVectorZ = [0 0 1];
     end
     methods (Static)
-        function res = findOrientation(vUp, vUpFront)
-            % find FRONT and RIGHT  vectors
-            vFront = vectorsMath.rotateVectorThroughAnotherVector(vUp, vUpFront, 90);
-            vRight = vectorsMath.rotateVectorAroundAnotherVector(vUp, vFront, -90);
+        function res = findOrientation(vVertical, vVerticalForward)
+            % find FORWARD and LATERAL  vectors
+            vForward = vectorsMath.rotateVectorThroughAnotherVector(vVertical, vVerticalForward, 90);
+            vLateral = vectorsMath.rotateVectorAroundAnotherVector(vVertical, vForward, -90);
 
             o = struct();
-            o.vUp = vUp;
-            o.vFront = vFront;
-            o.vRight = vRight;
+            o.vVertical = vVertical;
+            o.vForward = vForward;
+            o.vLateral = vLateral;
             
             if vectorsMath.LOG_ORIENTATION
                 disp('orientation:'); 
-                disp(['vUp: [',num2str(o.vUp.X),' ',num2str(o.vUp.Y),' ',num2str(o.vUp.Z),']']);
-                disp(['vFront: [',num2str(o.vFront.X),' ',num2str(o.vFront.Y),' ',num2str(o.vFront.Z),']']);
-                disp(['vRight: [',num2str(o.vRight.X),' ',num2str(o.vRight.Y),' ',num2str(o.vRight.Z),']']);
+                disp(['vVertical: [',num2str(o.vVertical.X),' ',num2str(o.vVertical.Y),' ',num2str(o.vVertical.Z),']']);
+                disp(['vForward: [',num2str(o.vForward.X),' ',num2str(o.vForward.Y),' ',num2str(o.vForward.Z),']']);
+                disp(['vLateral: [',num2str(o.vLateral.X),' ',num2str(o.vLateral.Y),' ',num2str(o.vLateral.Z),']']);
             end
 
             res = o;
@@ -32,9 +32,9 @@ classdef vectorsMath
         function res = findVectorComponentsInTheOrientation(vG, orientation)
             % find vector components of measuread gravity for each direction
             gvComponents = struct();
-            gvComponents.vUp = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vUp);
-            gvComponents.vFront = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vFront);
-            gvComponents.vRight = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vRight);
+            gvComponents.vVertical = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vVertical);
+            gvComponents.vForward = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vForward);
+            gvComponents.vLateral = vectorsMath.vectorComponentParallelToAnotherVector(vG, orientation.vLateral);
             
             res = gvComponents;
         end
@@ -43,18 +43,18 @@ classdef vectorsMath
             vComponents = vectorsMath.findVectorComponentsInTheOrientation(v, orientation);
             
             vMagnitudes = struct();
-            vMagnitudes.UP = vectorsMath.vectorMagnitude(vComponents.vUp);
-            vMagnitudes.FRONT = vectorsMath.vectorMagnitude(vComponents.vFront);
-            vMagnitudes.RIGHT = vectorsMath.vectorMagnitude(vComponents.vRight);
+            vMagnitudes.VERTICAL = vectorsMath.vectorMagnitude(vComponents.vVertical);
+            vMagnitudes.FORWARD = vectorsMath.vectorMagnitude(vComponents.vForward);
+            vMagnitudes.LATERAL = vectorsMath.vectorMagnitude(vComponents.vLateral);
 
-            if (vectorsMath.isVectorsInOppositeDirection(orientation.vUp, vComponents.vUp))
-                vMagnitudes.UP = -vMagnitudes.UP; % DOWN
+            if (vectorsMath.isVectorsInOppositeDirection(orientation.vVertical, vComponents.vVertical))
+                vMagnitudes.VERTICAL = -vMagnitudes.VERTICAL; % DOWN
             end
-            if (vectorsMath.isVectorsInOppositeDirection(orientation.vFront, vComponents.vFront))
-                vMagnitudes.FRONT = -vMagnitudes.FRONT; % BACK
+            if (vectorsMath.isVectorsInOppositeDirection(orientation.vForward, vComponents.vForward))
+                vMagnitudes.FORWARD = -vMagnitudes.FORWARD; % BACK
             end
-            if (vectorsMath.isVectorsInOppositeDirection(orientation.vRight, vComponents.vRight))
-                vMagnitudes.RIGHT = -vMagnitudes.RIGHT; % LEFT
+            if (vectorsMath.isVectorsInOppositeDirection(orientation.vLateral, vComponents.vLateral))
+                vMagnitudes.LATERAL = -vMagnitudes.LATERAL; % LEFT
             end
             
             % find acceleration componentes and magnitude for each direction
@@ -65,13 +65,13 @@ classdef vectorsMath
             if vectorsMath.LOG_ACCELERATION_COMPONENTS
                 c = vComponents;
                 disp('components:'); 
-                disp(['vUp: [',num2str(c.vUp.X),' ',num2str(c.vUp.Y),' ',num2str(c.vUp.Z),']']);
-                disp(['vFront: [',num2str(c.vFront.X),' ',num2str(c.vFront.Y),' ',num2str(c.vFront.Z),']']);
-                disp(['vRight: [',num2str(c.vRight.X),' ',num2str(c.vRight.Y),' ',num2str(c.vRight.Z),']']);
+                disp(['vVertical: [',num2str(c.vVertical.X),' ',num2str(c.vVertical.Y),' ',num2str(c.vVertical.Z),']']);
+                disp(['vForward: [',num2str(c.vForward.X),' ',num2str(c.vForward.Y),' ',num2str(c.vForward.Z),']']);
+                disp(['vLateral: [',num2str(c.vLateral.X),' ',num2str(c.vLateral.Y),' ',num2str(c.vLateral.Z),']']);
             end
             
             if vectorsMath.LOG_ACCELERATION_MAGNITUDES
-                disp(['magnitudes -> ', 'up: ', num2str(vMagnitudes.UP), ', front: ',num2str(vMagnitudes.FRONT), ', right: ',num2str(vMagnitudes.RIGHT)]); 
+                disp(['magnitudes -> ', 'VERTICAL: ', num2str(vMagnitudes.VERTICAL), ', FORWARD: ',num2str(vMagnitudes.FORWARD), ', LATERAL: ',num2str(vMagnitudes.LATERAL)]); 
             end
 
             res = g;

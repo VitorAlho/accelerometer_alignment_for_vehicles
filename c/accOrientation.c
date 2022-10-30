@@ -124,19 +124,19 @@ void rotateVectorAroundAnotherVector(Vector *v1, Vector *v2, int angle, Vector *
     rotV1->Z = paralelToV2.Z + perpendicularToV2.Z * cosRad + perpendicularToV2_mag * (w.Z / w_mag) * sinRad;
 }
 
-void findOrientation(Vector *vUp, Vector *vUpFront, Orientation *orientation) {
-    // find FRONT and RIGHT  vectors
-	rotateVectorThroughAnotherVector(vUp, vUpFront, 90, &orientation->vFront);
-    rotateVectorAroundAnotherVector(vUp, &orientation->vFront, -90, &orientation->vRight);
+void findOrientation(Vector *vVertical, Vector *vVerticalForward, Orientation *orientation) {
+    // find FORWARD and LATERAL  vectors
+	rotateVectorThroughAnotherVector(vVertical, vVerticalForward, 90, &orientation->vForward);
+    rotateVectorAroundAnotherVector(vVertical, &orientation->vForward, -90, &orientation->vLateral);
 
-    memcpy(&orientation->vUp, vUp, sizeof(Vector));
+    memcpy(&orientation->vVertical, vVertical, sizeof(Vector));
 }
 
 void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, Orientation *vComponents) {
     // find vector components of measuread vector for each direction
-    vectorComponentParallelToAnotherVector(v, &orientation->vUp, &vComponents->vUp);
-    vectorComponentParallelToAnotherVector(v, &orientation->vFront, &vComponents->vFront);
-    vectorComponentParallelToAnotherVector(v, &orientation->vRight, &vComponents->vRight);
+    vectorComponentParallelToAnotherVector(v, &orientation->vVertical, &vComponents->vVertical);
+    vectorComponentParallelToAnotherVector(v, &orientation->vForward, &vComponents->vForward);
+    vectorComponentParallelToAnotherVector(v, &orientation->vLateral, &vComponents->vLateral);
 }
 
 void findVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, OrientationMagnitude *g) {
@@ -144,17 +144,17 @@ void findVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, O
 	findVectorComponentsInTheOrientation(v, orientation, &vComponents);
 
     // find magnitude for each direction
-    g->UP = (float)vectorMagnitude(&vComponents.vUp);
-    g->FRONT = (float)vectorMagnitude(&vComponents.vFront);
-    g->RIGHT = (float)vectorMagnitude(&vComponents.vRight);
+    g->VERTICAL = (float)vectorMagnitude(&vComponents.vVertical);
+    g->FORWARD = (float)vectorMagnitude(&vComponents.vForward);
+    g->LATERAL = (float)vectorMagnitude(&vComponents.vLateral);
 
-    if (isVectorsInOppositeDirection(&orientation->vUp, &vComponents.vUp)){
-        g->UP = -g->UP; // DOWN
+    if (isVectorsInOppositeDirection(&orientation->vVertical, &vComponents.vVertical)){
+        g->VERTICAL = -g->VERTICAL;
     }
-    if (isVectorsInOppositeDirection(&orientation->vFront, &vComponents.vFront)){
-        g->FRONT = -g->FRONT; // BACK
+    if (isVectorsInOppositeDirection(&orientation->vForward, &vComponents.vForward)){
+        g->FORWARD = -g->FORWARD;
         }
-    if (isVectorsInOppositeDirection(&orientation->vRight, &vComponents.vRight)){
-        g->RIGHT = -g->RIGHT; // LEFT
+    if (isVectorsInOppositeDirection(&orientation->vLateral, &vComponents.vLateral)){
+        g->LATERAL = -g->LATERAL;
     }
 }

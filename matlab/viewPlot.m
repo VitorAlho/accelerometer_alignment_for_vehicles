@@ -78,13 +78,13 @@ classdef viewPlot
 
             if configs.PLOT_ORIENTATION
                 % plot 3D orientation, and save its object handler
-                plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(orientation.vUp, 'b-^', 1); % PLOT vUp direction
-                plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(orientation.vFront, 'g-^', 1); % PLOT vFront direction
-                plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(orientation.vRight, 'r-^', 1); % PLOT vRight direction
+                plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(orientation.vVertical, 'b-^', 1); % PLOT vVertical direction
+                plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(orientation.vForward, 'g-^', 1); % PLOT vForward direction
+                plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(orientation.vLateral, 'r-^', 1); % PLOT vLateral direction
             end
 
-            if configs.PLOT_UP_FRONT
-                %viewPlot.plotVectorToMatlabFormat(vUpFront, 'y-^', 2); % PLOT vUpFront direction
+            if configs.PLOT_VERTICAL_FORWARD
+                %viewPlot.plotVectorToMatlabFormat(vVerticalForward, 'y-^', 2); % PLOT vVerticalForward direction
             end
 
             if configs.PLOT_CUBE
@@ -95,9 +95,9 @@ classdef viewPlot
             if configs.PLOT_ACCELERATION_AND_COMPONENTS
                 % plot 3D acceleration, and save its object handler
                 plottedObjects(5) = viewPlot.plotVectorToMatlabFormat(acc, 'k-^', 2); % PLOT mesuared acceleration vector
-                plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(accComponents.vUp, 'k--^', 2); % PLOT vUp component of acceleration vector
-                plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(accComponents.vFront, 'k--^', 2); % PLOT vFront component of acceleration vector
-                plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(accComponents.vRight, 'k--^', 2); % PLOT vRight component of acceleration vector
+                plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(accComponents.vVertical, 'k--^', 2); % PLOT vVertical component of acceleration vector
+                plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(accComponents.vForward, 'k--^', 2); % PLOT vForward component of acceleration vector
+                plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(accComponents.vLateral, 'k--^', 2); % PLOT vLateral component of acceleration vector
             end
 
             if (configs.ADJUST_PLOT_VIEW && configs.PLOT_ORIENTATION) 
@@ -106,12 +106,12 @@ classdef viewPlot
         end
         
         function adjustPlotView(orientation, plottedObjects)
-            cateto = orientation.vUp.Z;
-            catetoOposto = orientation.vUp.Y;
+            cateto = orientation.vVertical.Z;
+            catetoOposto = orientation.vVertical.Y;
             hipotenusa = sqrt(cateto^2 + catetoOposto^2);
             theta = acos(cateto/hipotenusa);
             angleRotationAboutX = theta * (180/pi);
-            if(orientation.vUp.Y > 0)
+            if(orientation.vVertical.Y > 0)
                 angleRotationAboutX = -angleRotationAboutX;
             end
             %disp('angleRotationAboutX:');

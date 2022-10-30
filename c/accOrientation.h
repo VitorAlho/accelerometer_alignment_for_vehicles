@@ -17,19 +17,19 @@ typedef struct {
 
 //describe orientation vectors
 typedef struct {
-	Vector vUp;
-	Vector vFront;
-	Vector vRight;
+	Vector vVertical;
+	Vector vForward;
+	Vector vLateral;
 } Orientation;
 
 //describe the magnitude of the components of a vector in every direction of the orientation
 typedef struct {
-	float UP;
-	float FRONT;
-	float RIGHT;
+	float VERTICAL;
+	float FORWARD;
+	float LATERAL;
 } OrientationMagnitude;
 
-void findOrientation(Vector *vUp, Vector *vUpFront, Orientation *orientation);
+void findOrientation(Vector *vVertical, Vector *vVerticalForward, Orientation *orientation);
 void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, Orientation *vComponents);
 void findVectorsMagnitudeInTheOrientation(Vector *v, Orientation *orientation, OrientationMagnitude *g);
 
