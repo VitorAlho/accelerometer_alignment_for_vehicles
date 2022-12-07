@@ -81,11 +81,24 @@ classdef vectorsMath
             res = vectorsMath.dotProduct(v1, v2) < 0;
         end
 
+        % calcute the angle between two 3d vectors
         function res = angleBetweenVectors(v1, v2)
-            U = [v1.X v1.Y v1.Z];
-            V = [v2.X v2.Y v2.Z];
-            CosTheta = max(min(dot(U,V)/(norm(U)*norm(V)),1),-1);
+            %U = [v1.X v1.Y v1.Z];
+            %V = [v2.X v2.Y v2.Z];
+            %CosTheta = max(min(dot(U,V)/(norm(U)*norm(V)),1),-1);
+            %ThetaInDegrees = real(acosd(CosTheta));
+            
+            CosTheta = vectorsMath.dotProduct(v1,v2)/(vectorsMath.vectorMagnitude(v1)*vectorsMath.vectorMagnitude(v2));
+            if(CosTheta > 1)
+                CosTheta = 1;
+            end
+            if(CosTheta < -1)
+                CosTheta = -1;
+            end
+            disp(CosTheta);
             ThetaInDegrees = real(acosd(CosTheta));
+       
+            disp(ThetaInDegrees);
             res = ThetaInDegrees;
         end
         

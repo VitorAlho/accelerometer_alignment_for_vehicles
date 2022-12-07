@@ -22,6 +22,7 @@ void rotateVectorThroughAnotherVector(Vector *v1, Vector *v2, int angle, Vector 
 void vectorComponentParallelToAnotherVector(Vector *v1, Vector *v2, Vector *parallelV);
 void rotateVectorAroundAnotherVector(Vector *v1, Vector *v2, int angle, Vector *rotV1);
 void findVectorComponentsInTheOrientation(Vector *v, Orientation *orientation, Orientation *vComponents);
+int angleBetweenVectors(Vector *v1, Vector *v2);
 
 float vectorMagnitude(Vector *v) {
     return sqrtf(v->X*v->X + v->Y*v->Y + v->Z*v->Z);
@@ -36,6 +37,17 @@ void unitVector(Vector *inputV, Vector *outputV) {
 
 float dotProduct(Vector *v1, Vector *v2) {
     return v1->X*v2->X + v1->Y*v2->Y + v1->Z*v2->Z;
+}
+
+int angleBetweenVectors(Vector *v1, Vector *v2)
+{
+	float CosTheta = dotProduct(v1, v2) / ( vectorMagnitude(v1) * vectorMagnitude(v2) );
+	//range -1 a 1 represents 0 to 180 degrees, it can't be outside this range
+	if(CosTheta > 1) CosTheta = 1;
+	if(CosTheta < -1) CosTheta = -1;
+
+	//angle = radians*(180/PI)
+	return (int)(acos(CosTheta)*(180/PI));
 }
 
 void subtractVectors(Vector *v1, Vector *v2, Vector *outputV) {
