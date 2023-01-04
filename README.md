@@ -1,4 +1,4 @@
-# accelerometer_calibration_for_vehicles
+# accelerometer_alignment_for_vehicles
 
 This script computes the accelerometer orientation for a vehicle.
 It also computes the components of any other acceleration for the given orientation.
