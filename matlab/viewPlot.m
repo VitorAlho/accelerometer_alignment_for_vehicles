@@ -23,6 +23,8 @@ classdef viewPlot
             elevation = 0;
             view(azimuth,elevation);
             
+            legend();
+            
             if showAxis
                 viewPlot.plotAxis();
             end
@@ -36,18 +38,21 @@ classdef viewPlot
             axisVector.X = vectorsMath.unitVectorX * axisLimit;
             axisVector.Y = vectorsMath.unitVectorY * axisLimit;
             axisVector.Z = vectorsMath.unitVectorZ * axisLimit;
-            viewPlot.plotVector(axisVector.X, 'r--^', 2);
-            viewPlot.plotVector(axisVector.Y, 'g--^', 2);
-            viewPlot.plotVector(axisVector.Z, 'b--^', 2);
+            viewPlot.plotVector(axisVector.X, 'r--^', 2, "accelerometer X axis");
+            viewPlot.plotVector(axisVector.Y, 'g--^', 2, "accelerometer Y axis");
+            viewPlot.plotVector(axisVector.Z, 'b--^', 2, "accelerometer Z axis");
         end
         
-        function object = plotVector(v, style, lineWidth)
+        function object = plotVector(v, style, lineWidth, displayName)
             object = plot3([0 v(1)],[0 v(2)],[0 v(3)], style, 'LineWidth',lineWidth);
+            if(strlength(displayName))
+                object.DisplayName = displayName;
+            end
         end
         
-        function object = plotVectorToMatlabFormat(v, style, lineWidth)
+        function object = plotVectorToMatlabFormat(v, style, lineWidth, displayName)
             mv = vectorsMath.vectorToMatlabFormat(v);
-            object = viewPlot.plotVector(mv, style, lineWidth);
+            object = viewPlot.plotVector(mv, style, lineWidth, displayName);
         end
              
         % sizeRatio em camparação com o valor da variavel axisLimit
@@ -73,34 +78,47 @@ classdef viewPlot
             %p.FaceVertexAlphaData = 0.5;
             %p.FaceAlpha = 'flat';
             
+            p.DisplayName = 'device orientation';
+            
             object = p;
         end
         
-        function plotAccComponentsForAGivenOrientation (configs, orientation, acc, accComponents)
+        function plotAccComponentsForAGivenOrientation (configs, orientation, vAccOrBreaking, gForce, gForceComponents)
             plottedObjects = hggroup; % group plotted objects in one single handle, so we can manipulate all at once
 
-            if configs.PLOT_ORIENTATION
-                % plot 3D orientation, and save its object handler
-                plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(orientation.vVertical, 'b-^', 1); % PLOT vVertical direction
-                plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(orientation.vForward, 'g-^', 1); % PLOT vForward direction
-                plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(orientation.vLateral, 'r-^', 1); % PLOT vLateral direction
+            % plot 3D orientation, and save its object handler
+            plottedObjects(1) = viewPlot.plotVectorToMatlabFormat(orientation.vVertical, 'b-^', 1, "vertical vector"); % PLOT vVertical direction
+            plottedObjects(2) = viewPlot.plotVectorToMatlabFormat(orientation.vForward, 'g-^', 1, "forward vector"); % PLOT vForward direction
+            plottedObjects(3) = viewPlot.plotVectorToMatlabFormat(orientation.vLateral, 'r-^', 1, "lateral vector"); % PLOT vLateral direction
+            if configs.PLOT_ORIENTATION == false
+                plottedObjects(1).Visible = 'off';
+                plottedObjects(2).Visible = 'off';
+                plottedObjects(3).Visible = 'off';
+            end
+            
+            plottedObjects(4) = viewPlot.plotVectorToMatlabFormat(vAccOrBreaking, 'm-^', 2, "accelerating or breaking vector"); % PLOT vVerticalForward direction
+            if configs.PLOT_ACC_OR_BREAKING == false
+                plottedObjects(4).Visible = 'off';
+            end
+            
+            
+            % plot 3D cube, and save its object handler
+            plottedObjects(5) = viewPlot.plotCube(configs.CUBE_SIZE_RATIO);
+            if configs.PLOT_CUBE == false
+                plottedObjects(5).Visible = 'off';
             end
 
-            if configs.PLOT_VERTICAL_FORWARD
-                %viewPlot.plotVectorToMatlabFormat(vVerticalForward, 'y-^', 2); % PLOT vVerticalForward direction
-            end
 
-            if configs.PLOT_CUBE
-                % plot 3D cube, and save its object handler
-                plottedObjects(4) = viewPlot.plotCube(configs.CUBE_SIZE_RATIO);
-            end
-
-            if configs.PLOT_ACCELERATION_AND_COMPONENTS
-                % plot 3D acceleration, and save its object handler
-                plottedObjects(5) = viewPlot.plotVectorToMatlabFormat(acc, 'k-^', 2); % PLOT mesuared acceleration vector
-                plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(accComponents.vVertical, 'k--^', 2); % PLOT vVertical component of acceleration vector
-                plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(accComponents.vForward, 'k--^', 2); % PLOT vForward component of acceleration vector
-                plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(accComponents.vLateral, 'k--^', 2); % PLOT vLateral component of acceleration vector
+            % plot 3D acceleration, and save its object handler
+            plottedObjects(6) = viewPlot.plotVectorToMatlabFormat(gForce, 'k-^', 2, "any measured G-force"); % PLOT mesuared acceleration vector
+            plottedObjects(7) = viewPlot.plotVectorToMatlabFormat(gForceComponents.vVertical, 'k--o', 2, "vertical component of G-force"); % PLOT vVertical component of acceleration vector
+            plottedObjects(8) = viewPlot.plotVectorToMatlabFormat(gForceComponents.vForward, 'k--square', 2, "forward component of G-force"); % PLOT vForward component of acceleration vector
+            plottedObjects(9) = viewPlot.plotVectorToMatlabFormat(gForceComponents.vLateral, 'k--diamond', 2, "lateral component of G-force"); % PLOT vLateral component of acceleration vector
+            if configs.PLOT_G_FORCE_AND_COMPONENTS == false
+                plottedObjects(6).Visible = 'off';
+                plottedObjects(7).Visible = 'off';
+                plottedObjects(8).Visible = 'off';
+                plottedObjects(9).Visible = 'off';
             end
 
             if (configs.ADJUST_PLOT_VIEW && configs.PLOT_ORIENTATION) 

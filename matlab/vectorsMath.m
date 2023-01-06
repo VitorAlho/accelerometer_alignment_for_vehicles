@@ -1,8 +1,8 @@
 classdef vectorsMath
     properties (Constant)
         LOG_ORIENTATION = true; % LOG orientation vectors (VERTICAL, FORWARD, LATERAL)
-        LOG_ACCELERATION_COMPONENTS = false; % LOG the compontens of any given acceleration, align in the orientation
-        LOG_ACCELERATION_MAGNITUDES = true; % Log the magnitude of the components
+        LOG_G_FORCE_COMPONENTS = true; % LOG the compontens of any given acceleration, align in the orientation
+        LOG_G_FORCE_MAGNITUDES = true; % Log the magnitude of the components
         
         unitVectorX = [1 0 0] * -1; %adjustment for cube plot
         unitVectorY = [0 1 0];
@@ -20,7 +20,8 @@ classdef vectorsMath
             o.vLateral = vLateral;
             
             if vectorsMath.LOG_ORIENTATION
-                disp('orientation:'); 
+                disp(' ');
+                disp('Alignment Vectors:'); 
                 disp(['vVertical: [',num2str(o.vVertical.X),' ',num2str(o.vVertical.Y),' ',num2str(o.vVertical.Z),']']);
                 disp(['vForward: [',num2str(o.vForward.X),' ',num2str(o.vForward.Y),' ',num2str(o.vForward.Z),']']);
                 disp(['vLateral: [',num2str(o.vLateral.X),' ',num2str(o.vLateral.Y),' ',num2str(o.vLateral.Z),']']);
@@ -62,16 +63,19 @@ classdef vectorsMath
             g.vComponents = vComponents;
             g.vMagnitudes = vMagnitudes;
             
-            if vectorsMath.LOG_ACCELERATION_COMPONENTS
+            if vectorsMath.LOG_G_FORCE_COMPONENTS
                 c = vComponents;
-                disp('components:'); 
+                disp(' ');
+                disp('G Force Components:'); 
                 disp(['vVertical: [',num2str(c.vVertical.X),' ',num2str(c.vVertical.Y),' ',num2str(c.vVertical.Z),']']);
                 disp(['vForward: [',num2str(c.vForward.X),' ',num2str(c.vForward.Y),' ',num2str(c.vForward.Z),']']);
                 disp(['vLateral: [',num2str(c.vLateral.X),' ',num2str(c.vLateral.Y),' ',num2str(c.vLateral.Z),']']);
             end
             
-            if vectorsMath.LOG_ACCELERATION_MAGNITUDES
-                disp(['magnitudes -> ', 'VERTICAL: ', num2str(vMagnitudes.VERTICAL), ', FORWARD: ',num2str(vMagnitudes.FORWARD), ', LATERAL: ',num2str(vMagnitudes.LATERAL)]); 
+            if vectorsMath.LOG_G_FORCE_MAGNITUDES
+                disp(' ');
+                disp('G Force Magnitudes:'); 
+                disp(['VERTICAL: ', num2str(vMagnitudes.VERTICAL), ', FORWARD: ',num2str(vMagnitudes.FORWARD), ', LATERAL: ',num2str(vMagnitudes.LATERAL)]); 
             end
 
             res = g;
