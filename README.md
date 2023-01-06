@@ -1,7 +1,7 @@
 # accelerometer_alignment_for_vehicles
 
 This script computes the accelerometer orientation for a vehicle.
-It also computes the components of any other acceleration for the given orientation.
+It also computes the components of any measured G-Force for the given orientation.
 
 It is assumed that the user is able to measure the **VERTICAL VECTOR**, and is able to measure the **ACCELERATION OR BREAKING VECTOR**, as described:
 
